@@ -7,8 +7,8 @@ dotenv.config();
 const client = new S3Client({
     region: process.env.AWS_REGION || "us-east-1",
     credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY || "",
-        secretAccessKey: process.env.AWS_SECRET_KEY || "",
+        accessKeyId: process.env.AWS_ACCESS_KEY_LOCAL || "",
+        secretAccessKey: process.env.AWS_SECRET_KEY_LOCAL || "",
     },
 });
 
@@ -30,7 +30,11 @@ const run = async () => {
                     {
                         AllowedHeaders: ["*"],
                         AllowedMethods: ["GET", "PUT", "POST", "HEAD"],
-                        AllowedOrigins: ["http://localhost:3000", "http://127.0.0.1:3000"], // Allow localhost
+                        AllowedOrigins: [
+                            "http://localhost:3000",
+                            "http://127.0.0.1:3000",
+                            "https://distributegpufinal-kbazshis3-prithishshans-projects.vercel.app"
+                        ], // Allow localhost and Vercel
                         ExposeHeaders: ["ETag"],
                         MaxAgeSeconds: 3600,
                     },
