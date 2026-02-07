@@ -1,5 +1,160 @@
 /* Mosaic UI — tiled, geometric layout */
 
+/* Landing (entry) page */
+.landing-root {
+  --mosaic-bg: #0d0d12;
+  --mosaic-tile-bg: #1c1c28;
+  --mosaic-border: #2a2a3e;
+  --mosaic-accent: #7c3aed;
+  --mosaic-text: #e2e8f0;
+  --mosaic-muted: #94a3b8;
+  --mosaic-highlight: #a78bfa;
+  min-height: 100vh;
+  background: var(--mosaic-bg);
+  color: var(--mosaic-text);
+  padding: clamp(24px, 5vw, 48px);
+  font-family: system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-title {
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 8px;
+  background: linear-gradient(135deg, var(--mosaic-text), var(--mosaic-highlight));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.landing-subtitle {
+  margin: 0 0 32px;
+  font-size: 1rem;
+  color: var(--mosaic-muted);
+}
+
+.landing-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  max-width: 560px;
+}
+
+.landing-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
+  min-height: 140px;
+  padding: 28px 32px;
+  background: var(--mosaic-tile-bg);
+  border: 1px solid var(--mosaic-border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--mosaic-text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.landing-card:hover {
+  border-color: var(--mosaic-accent);
+  box-shadow: 0 0 0 1px var(--mosaic-accent);
+}
+
+.landing-card-label {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--mosaic-highlight);
+  margin-bottom: 8px;
+}
+
+.landing-card-desc {
+  font-size: 0.85rem;
+  color: var(--mosaic-muted);
+  text-align: center;
+}
+
+/* Back link (design + job pages) — uses vars from :root below */
+.mosaic-back-link {
+  --mosaic-muted: #94a3b8;
+  --mosaic-highlight: #a78bfa;
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+}
+
+.mosaic-back-link a {
+  color: var(--mosaic-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.mosaic-back-link a:hover {
+  color: var(--mosaic-highlight);
+}
+
+/* Design page wrapper (so back link has dark bg) */
+.design-page-wrap {
+  background: #0d0d12;
+}
+
+/* Job page */
+.job-page {
+  --mosaic-bg: #0d0d12;
+  --mosaic-tile-bg: #1c1c28;
+  --mosaic-border: #2a2a3e;
+  --mosaic-accent: #7c3aed;
+  --mosaic-text: #e2e8f0;
+  --mosaic-muted: #94a3b8;
+  --mosaic-highlight: #a78bfa;
+  background: var(--mosaic-bg);
+  color: var(--mosaic-text);
+  font-family: system-ui, -apple-system, sans-serif;
+  padding: 24px;
+}
+
+.job-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding-top: 40px;
+}
+
+.job-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 24px;
+  color: var(--mosaic-text);
+}
+
+.job-start-btn {
+  padding: 12px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+  background: var(--mosaic-accent);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.job-start-btn:hover {
+  background: var(--mosaic-highlight);
+}
+
+.job-start-btn:active {
+  transform: scale(0.98);
+}
+
 .mosaic-root {
   --mosaic-bg: #0d0d12;
   --mosaic-surface: #16161e;
