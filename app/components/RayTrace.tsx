@@ -431,15 +431,24 @@ export default function RayTrace() {
     () => typeof navigator !== "undefined" && Boolean(navigator.gpu),
     []
   );
+  const runtimeError = supportsWebGPU
+    ? error
+    : "WebGPU not supported on this browser.";
 
   useEffect(() => {
     if (!supportsWebGPU) {
-      setError("WebGPU not supported on this browser.");
       return;
     }
 
     let disposed = false;
     let animationFrameId = 0;
+    let outputTextureSnapshot: GPUTexture | null = null;
+    let meshBuffersSnapshot: {
+      positions?: GPUBuffer;
+      indices?: GPUBuffer;
+      triIndices?: GPUBuffer;
+      bvhNodes?: GPUBuffer;
+    } = {};
 
     const initWebGPU = async () => {
       const adapter = await navigator.gpu.requestAdapter();
@@ -472,21 +481,21 @@ export default function RayTrace() {
         minFilter: "linear",
       });
 
-      const module = device.createShaderModule({
+      const shaderModule = device.createShaderModule({
         label: "OBJ Raytracing Shaders",
         code: shaderCode,
       });
 
       computePipelineRef.current = device.createComputePipeline({
         layout: "auto",
-        compute: { module, entryPoint: "main" },
+        compute: { module: shaderModule, entryPoint: "main" },
       });
 
       renderPipelineRef.current = device.createRenderPipeline({
         layout: "auto",
-        vertex: { module, entryPoint: "vs" },
+        vertex: { module: shaderModule, entryPoint: "vs" },
         fragment: {
-          module,
+          module: shaderModule,
           entryPoint: "fs",
           targets: [{ format: presentationFormat }],
         },
@@ -519,6 +528,7 @@ export default function RayTrace() {
             GPUTextureUsage.TEXTURE_BINDING,
         });
         outputViewRef.current = outputTextureRef.current.createView();
+        outputTextureSnapshot = outputTextureRef.current;
 
         buildBindGroups();
       };
@@ -567,6 +577,7 @@ export default function RayTrace() {
         meshBuffersRef.current.indices?.destroy();
         meshBuffersRef.current.triIndices?.destroy();
         meshBuffersRef.current.bvhNodes?.destroy();
+        meshBuffersSnapshot = {};
 
         const { triIndexArray, nodeBuffer, nodeCount } = buildBvh(mesh);
 
@@ -574,6 +585,7 @@ export default function RayTrace() {
           size: mesh.positions.byteLength,
           usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
         });
+        meshBuffersSnapshot.positions = meshBuffersRef.current.positions;
         deviceRef.current.queue.writeBuffer(
           meshBuffersRef.current.positions,
           0,
@@ -594,6 +606,7 @@ export default function RayTrace() {
           size: packedIndices.byteLength,
           usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
         });
+        meshBuffersSnapshot.indices = meshBuffersRef.current.indices;
         deviceRef.current.queue.writeBuffer(
           meshBuffersRef.current.indices,
           0,
@@ -606,6 +619,7 @@ export default function RayTrace() {
           size: triIndexArray.byteLength,
           usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
         });
+        meshBuffersSnapshot.triIndices = meshBuffersRef.current.triIndices;
         deviceRef.current.queue.writeBuffer(
           meshBuffersRef.current.triIndices,
           0,
@@ -618,6 +632,7 @@ export default function RayTrace() {
           size: nodeBuffer.byteLength,
           usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
         });
+        meshBuffersSnapshot.bvhNodes = meshBuffersRef.current.bvhNodes;
         deviceRef.current.queue.writeBuffer(
           meshBuffersRef.current.bvhNodes,
           0,
@@ -715,11 +730,11 @@ export default function RayTrace() {
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
       }
-      outputTextureRef.current?.destroy();
-      meshBuffersRef.current.positions?.destroy();
-      meshBuffersRef.current.indices?.destroy();
-      meshBuffersRef.current.triIndices?.destroy();
-      meshBuffersRef.current.bvhNodes?.destroy();
+      outputTextureSnapshot?.destroy();
+      meshBuffersSnapshot.positions?.destroy();
+      meshBuffersSnapshot.indices?.destroy();
+      meshBuffersSnapshot.triIndices?.destroy();
+      meshBuffersSnapshot.bvhNodes?.destroy();
     };
   }, [supportsWebGPU]);
 
@@ -732,8 +747,8 @@ export default function RayTrace() {
     uploader.uploadObj?.(text);
   };
 
-  if (error) {
-    return <div className="text-red-500 p-4">Error: {error}</div>;
+  if (runtimeError) {
+    return <div className="text-red-500 p-4">Error: {runtimeError}</div>;
   }
 
   return (
