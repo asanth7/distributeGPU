@@ -5,6 +5,10 @@ import { useEffect, useRef, useState } from "react";
 import { WorkerRenderer } from "@/app/components/WorkerRenderer";
 import { Scene } from "@/shaders/Scene";
 
+// if (typeof Float16Array === 'undefined') {
+//   (globalThis as any).Float16Array = Uint16Array;
+// }
+
 export default function JobPage() {
   const [taskId, setTaskId] = useState("");
   const [status, setStatus] = useState("idle");
@@ -109,7 +113,7 @@ export default function JobPage() {
 
     addLog(`Rendering tile ${job.x},${job.y} (${job.width}x${job.height})...`);
     // Pass the task object which now has the correct params
-    const pixelData = await renderer.renderTile(job, task, 10); // 10 samples
+    const pixelData = await renderer.renderTile(job, task, 50); 
 
     // Debug: Check if we have any non-zero pixels
     let nonZero = 0;
