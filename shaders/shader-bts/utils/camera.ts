@@ -1,4 +1,4 @@
-import { wgsl } from "wgsl-preprocessor/wgsl-preprocessor.js";
+import { preprocess, wgsl } from "wgsl-preprocessor/wgsl-preprocessor.js";
 
 export default wgsl/* wgsl */ `
   struct Camera {
@@ -21,7 +21,9 @@ export default wgsl/* wgsl */ `
     focusDist: f32,
 
     defocusDiscU: vec3f,
-    defocusDiscV: vec3f
+    defocusDiscV: vec3f,
+    tileOffsetX: u32,
+    tileOffsetY: u32
   }
 
   fn initCamera(camera: ptr<function, Camera>) {

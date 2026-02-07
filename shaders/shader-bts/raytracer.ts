@@ -1,4 +1,4 @@
-import { wgsl } from "wgsl-preprocessor/wgsl-preprocessor.js";
+import { preprocess, wgsl } from "wgsl-preprocessor/wgsl-preprocessor.js";
 
 import UtilsShaderChunk from "./utils/utils";
 import CommonShaderChunk from "./utils/common";
@@ -55,7 +55,7 @@ export default wgsl/* wgsl */ `
     
     var hitRec: HitRecord;
 
-    var r = getCameraRay(&camera, x, y, &rngState);
+    var r = getCameraRay(&camera, x + f32(camera.tileOffsetX), y + f32(camera.tileOffsetY), &rngState);
 
     var color = vec3f(0);
 

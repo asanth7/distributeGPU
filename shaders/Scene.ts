@@ -240,7 +240,7 @@ export class Scene {
 	private suzanneMaterialIdx!: number;
 	private sceneMaterials!: Material[];
 
-	constructor(private device: GPUDevice) {}
+	constructor(private device: GPUDevice) { }
 
 	public set isSuzanneGlass(v: boolean) {
 		const numFloatsPerMaterial = 8;
@@ -265,16 +265,16 @@ export class Scene {
 		this.device.queue.writeBuffer(
 			this.materialsBuffer,
 			this.suzanneMaterialIdx *
-				numFloatsPerMaterial *
-				Float32Array.BYTES_PER_ELEMENT,
+			numFloatsPerMaterial *
+			Float32Array.BYTES_PER_ELEMENT,
 			newSuzanneMaterialBuff,
 		);
 	}
 
-	public async loadModels() {
+	public async loadModels(objUrl: string, mtlUrl: string) {
 		const [objFileContents, mtlFileContents] = await Promise.all([
-			Scene.loadObjFileContents("raytraced-scene.obj"),
-			Scene.loadMtlFileContents("raytraced-scene.mtl"),
+			Scene.loadObjFileContents(objUrl),
+			Scene.loadMtlFileContents(mtlUrl),
 		]);
 
 		const sceneModels = Scene.parseModel(
@@ -284,7 +284,7 @@ export class Scene {
 		const sceneMaterials = Scene.parseMaterial(mtlFileContents);
 
 		this.suzanneMaterialIdx = mtlFileContents.findIndex(
-			({ name } : {name: string}) => name === "Suzanne",
+			({ name }: { name: string }) => name === "Suzanne",
 		);
 		this.sceneMaterials = sceneMaterials;
 
