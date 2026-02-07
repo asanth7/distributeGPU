@@ -137,7 +137,7 @@ export default function JobPage() {
       max_bounces: job.max_bounces
     };
 
-    if (Scene.MODELS_COUNT) {
+    if (Scene.MODELS_COUNT === 0) {
       addLog(`Loading scene from ${task.scene_mesh_url}...`);
       // We might want to use the passed URLs directly if they are usually presigned or public
       // But here we are passing them to init
