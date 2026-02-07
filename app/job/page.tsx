@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { WorkerRenderer } from "@/app/components/WorkerRenderer";
+import { Scene } from "@/shaders/Scene";
 
 export default function JobPage() {
   const [taskId, setTaskId] = useState("");
@@ -136,7 +137,7 @@ export default function JobPage() {
       max_bounces: job.max_bounces
     };
 
-    if (!renderer.scene.MODELS_COUNT) {
+    if (Scene.MODELS_COUNT) {
       addLog(`Loading scene from ${task.scene_mesh_url}...`);
       // We might want to use the passed URLs directly if they are usually presigned or public
       // But here we are passing them to init
