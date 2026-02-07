@@ -170,9 +170,10 @@ export default function MosaicUpload({ onTaskCreated }: MosaicUploadProps) {
 
           <div className="mosaic-create-btn-wrap mt-4">
             <button
+              type="button"
               onClick={handleCreateTask}
               disabled={isUploading}
-              className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 disabled:bg-gray-600"
+              className="mosaic-create-btn"
             >
               {isUploading ? uploadStatus : "Create Task"}
             </button>

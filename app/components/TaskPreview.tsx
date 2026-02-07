@@ -119,27 +119,27 @@ export default function TaskPreview({ taskId }: TaskPreviewProps) {
     if (!taskId) return null;
 
     return (
-        <div className="task-preview mt-8 p-4 bg-gray-900 rounded-lg border border-gray-700">
+        <div className="task-preview mt-8">
             <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-bold text-white">Live Render Preview</h3>
-                <span className="text-xs text-gray-400">Last updated: {lastUpdated.toLocaleTimeString()}</span>
+                <h3 className="task-preview-title">Live render preview</h3>
+                <span className="task-preview-meta">Last updated: {lastUpdated.toLocaleTimeString()}</span>
             </div>
 
-            <div className="overflow-auto bg-black rounded border border-gray-800 flex justify-center">
+            <div className="task-preview-canvas-wrap">
                 {taskDims.width > 0 ? (
                     <canvas
                         ref={canvasRef}
                         width={taskDims.width}
                         height={taskDims.height}
                         className="max-w-full h-auto"
-                        style={{ imageRendering: 'pixelated' }}
+                        style={{ imageRendering: "pixelated" }}
                     />
                 ) : (
-                    <div className="p-8 text-gray-500">Waiting for job data...</div>
+                    <div className="p-8 text-[var(--th-text-muted)]">Waiting for job data…</div>
                 )}
             </div>
-            <div className="mt-2 text-sm text-gray-400">
-                Completed: {jobs.filter(j => j.status === 'completed').length} / {jobs.length} tiles
+            <div className="task-preview-stats">
+                Completed: {jobs.filter((j) => j.status === "completed").length} / {jobs.length} tiles
             </div>
         </div>
     );

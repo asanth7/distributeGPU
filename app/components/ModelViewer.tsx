@@ -80,7 +80,7 @@ export default function ModelViewer({
   className?: string;
 }) {
   return (
-    <div className={className} style={{ background: "#1a1a2e", minHeight: 280 }}>
+    <div className={className} style={{ background: "#f5f2ed", minHeight: 280 }}>
       <Canvas
         camera={{ position: [2, 2, 2], fov: 50 }}
         gl={{ antialias: true, alpha: false }}

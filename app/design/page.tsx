@@ -14,29 +14,33 @@ export default function DesignPage() {
 
   return (
     <main className="min-h-screen design-page-wrap">
-      <div className="mosaic-back-link">
-        <Link href="/">← Back</Link>
-      </div>
+      <header className="design-top-bar">
+        <Link href="/" className="design-top-bar-back">
+          ← Back
+        </Link>
+        <span className="design-top-bar-brand">Distributed GPU</span>
+        <span className="design-top-bar-section">Design</span>
+      </header>
 
-      <div className="max-w-6xl mx-auto px-4 mb-8 pt-4">
-        <div className="flex gap-4 items-center bg-gray-900 p-4 rounded-lg border border-gray-700">
-          <span className="text-white font-bold">View Existing Task:</span>
+      <div className="design-page-enter max-w-6xl mx-auto px-4 mb-6 pt-4">
+        <div className="design-task-bar flex flex-wrap gap-3 items-center">
+          <span className="design-task-label">View existing task</span>
           <input
             type="text"
             placeholder="Enter Task ID"
-            className="bg-black text-white px-3 py-2 rounded border border-gray-600 flex-1"
+            className="flex-1 min-w-[140px]"
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 const val = (e.target as HTMLInputElement).value.trim();
                 if (val) setTaskId(val);
               }
             }}
           />
           <button
-            className="bg-blue-600 px-4 py-2 rounded text-white hover:bg-blue-500"
+            type="button"
             onClick={(e) => {
               const input = e.currentTarget.previousElementSibling as HTMLInputElement;
-              const val = input.value.trim();
+              const val = input?.value?.trim();
               if (val) setTaskId(val);
             }}
           >
@@ -45,10 +49,12 @@ export default function DesignPage() {
         </div>
       </div>
 
-      <MosaicUpload onTaskCreated={setTaskId} />
+      <div className="design-page-enter design-page-enter-delay">
+        <MosaicUpload onTaskCreated={setTaskId} />
+      </div>
 
       {taskId && (
-        <div className="mt-8 max-w-6xl mx-auto px-4">
+        <div className="design-page-enter mt-8 max-w-6xl mx-auto px-4">
           <TaskPreview taskId={taskId} />
         </div>
       )}

@@ -171,33 +171,33 @@ export default function JobPage() {
   };
 
   return (
-    <main className="min-h-screen job-page p-8 text-white">
-      <div className="mosaic-back-link mb-8">
+    <main className="min-h-screen job-page p-8">
+      <div className="mosaic-back-link">
         <Link href="/">← Back</Link>
       </div>
-      <div className="job-content max-w-2xl mx-auto">
-        <h1 className="job-title text-3xl font-bold mb-6">Worker Node</h1>
+      <div className="job-content">
+        <h1 className="job-title">Worker Node</h1>
 
-        <div className="flex gap-4 mb-6">
+        <div className="job-input-group">
           <input
             type="text"
             placeholder="Task ID"
-            className="bg-gray-800 p-2 rounded flex-1"
             value={taskId}
-            onChange={e => setTaskId(e.target.value)}
+            onChange={(e) => setTaskId(e.target.value)}
           />
           <button
+            type="button"
             onClick={startWorker}
             disabled={status === "running"}
-            className={`px-6 py-2 rounded ${status === "running" ? "bg-green-600" : "bg-blue-600 hover:bg-blue-500"}`}
+            className="job-start-btn"
           >
-            {status === "running" ? "Running..." : "Start Worker"}
+            {status === "running" ? "Running…" : "Start Worker"}
           </button>
         </div>
 
-        <div className="bg-black p-4 rounded h-96 overflow-y-auto font-mono text-sm border border-gray-800">
+        <div className="job-logs">
           {logs.map((log, i) => (
-            <div key={i} className="mb-1">{log}</div>
+            <div key={i} className="job-log-line">{log}</div>
           ))}
         </div>
       </div>
